@@ -36,6 +36,7 @@ Third Argument: Number to be outpulsed (If using Asterisk Sender)
 Gosub(mfmain,s,1(0,0,${EXTEN:-7}))
 
 
+Calls are delivered into the [Main] context.
 
 You will need to Patch your Asterisk system to allow answer supervision to pass through the MF trunk. Please look at the NPSTN Docs for information on how to do this. The related article in included below:
 
