@@ -24,7 +24,8 @@ You are all set! (For correct supervision see below)
 AST_Sender = Asterisk Sender (This is the built-in sender using the [mfer] subroutine developed by Naveen Albert & Brian Clancy)
 Cust_Sender = Enable this open if you want to use your own MF sender.
 
-FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to be used with AST_Sender for better reliability if you have FAM_ENABLE turned on using a Custom Sender the detector will not be able to hear the MF)
+FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to be used with AST_Sender for better reliability if you have F
+AM_ENABLE turned on using a Custom Sender the detector will not be able to hear the MF)
 
 FAM_Disable = This disables the Forward Audio Mute function.
 
@@ -35,14 +36,17 @@ Gosub(mfmain,s,1(0,0,${EXTEN:-7}))
 
 Calls are delivered into the [Main] context.
 
-You will need to Patch your Asterisk system to allow answer supervision to pass through the MF trunk. Please look at the NPSTN Docs for information on how to do this. The related article in included below:
+You will need to Patch your Asterisk system to allow answer supervision to pass through the MF trunk. 
+Please look at the NPSTN Docs for information on how to do this. The related article in included below:
 
 
 Non-Supervising Conference Bridges
 Discovery & Implementation Credit: Dylan Cruz, 04-2020
 Article was written by Naveen Albert for NPSTN
 
-By default, the ConfBridge() application will supervise with no alternative, unlike the Playback() application which accepts a noanswer argument. Because ConfBridge is often the only way to get much functionality in Asterisk to work as desired, this is a significant limitation; however, modifying the source code can remove this behavior for better operation.
+By default, the ConfBridge() application will supervise with no alternative, unlike the Playback() application which accepts a noanswer argument. 
+Because ConfBridge is often the only way to get much functionality in Asterisk to work as desired, this is a significant limitation; 
+however, modifying the source code can remove this behavior for better operation.
 
 Patch Instructions:
 
@@ -59,7 +63,8 @@ exten => s,1,Answer()
     same => n,ConfBridge(mybridge)
     same => n,Hangup()
                 
-This will allow two-way audio without answering. Progress allows passing of audio without supervising. The main use case here is for backend mixing of audio channels, such as for intercept, signaling, or operator services.
+This will allow two-way audio without answering. Progress allows passing of audio without supervising. 
+The main use case here is for backend mixing of audio channels, such as for intercept, signaling, or operator services.
 exten => s,1,Progress()
     same => n,ConfBridge(mybridge)
     same => n,Hangup()
