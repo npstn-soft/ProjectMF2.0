@@ -32,7 +32,11 @@ FAM_Disable = This disables the Forward Audio Mute function.
 First Argument: 0-AST_Sender, 1-Cust_Sender
 Second Argument: 0-FAM_Enable, 1-FAM_Disable
 Third Argument: Number to be out pulsed (If using Asterisk Sender)
-Gosub(mfmain,s,1(0,0,${EXTEN:-7}))
+
+Gosub(mfmain,s,1(0,0,5551212)) ; AST_Sender, FAM_Enable, KP 555-1212 ST (loopback into [Main]
+Gosub(mfmain,s,1(0,1,5551212)) ; AST_Sender, FAM_Disable, KP 555-1212 ST (loopback into [Main]
+
+Gosub(mfmain,s,1(1,1)) ; Cust_Sender, FAM_Disable, Expecting MF String from Custom Sender
 
 Calls are delivered into the [Main] context.
 
