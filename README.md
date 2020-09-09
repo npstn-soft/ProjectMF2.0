@@ -78,7 +78,9 @@ exten => s,1,Answer()
     same => n,Hangup()
                 
 This will allow two-way audio without answering. Progress allows passing of audio without supervising. 
-The main use case here is for backend mixing of audio channels, such as for intercept, signaling, or operator services.
+The main use case here is for backend mixing of audio channels, such as for intercept, signaling,
+or operator services.
+
 exten => s,1,Progress()
     same => n,ConfBridge(mybridge)
     same => n,Hangup()
