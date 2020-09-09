@@ -1,6 +1,7 @@
 # ProjectMF 2.0 (AstMF Rel)
 ```
-Included is a pre-compiled version of the DSP needed for x86 and ARM. If you would like to modify it we have included the main source (See detect_source)
+Included is a pre-compiled version of the DSP needed for x86 and ARM. If you would like to modify it we 
+have included the main source (See detect_source)
 
 Installation: 
 
@@ -16,15 +17,19 @@ Open your extensions.conf and add the line:
 
 #include mf.conf
 
-Copy the "mf_user" "mf_bridge" contexts from the included confbridge.conf example into your confbridge.conf or use our copy verbatim.
+Copy the "mf_user" "mf_bridge" contexts from the included confbridge.conf example into your 
+confbridge.conf or use our copy verbatim.
 Do the same thing for the included indications.conf (For MF Tone generation)
 
 You are all set! (For correct supervision see below)
 
-AST_Sender = Asterisk Sender (This is the built-in sender using the [mfer] subroutine developed by Naveen Albert & Brian Clancy)
+AST_Sender = Asterisk Sender (This is the built-in sender using the [mfer] subroutine developed by 
+Naveen Albert & Brian Clancy)
+
 Cust_Sender = Enable this  if you want to use your own MF sender.
 
-FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to be used with AST_Sender for better reliability if you have F
+FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to 
+be used with AST_Sender for better reliability if you have F
 AM_ENABLE turned on using a Custom Sender the detector will not be able to hear the MF)
 
 FAM_Disable = This disables the Forward Audio Mute function.
@@ -49,19 +54,23 @@ Non-Supervising Conference Bridges
 Discovery & Implementation Credit: Dylan Cruz, 04-2020
 Article was written by Naveen Albert for NPSTN
 
-By default, the ConfBridge() application will supervise with no alternative, unlike the Playback() application which accepts a noanswer argument. 
-Because ConfBridge is often the only way to get much functionality in Asterisk to work as desired, this is a significant limitation; 
+By default, the ConfBridge() application will supervise with no alternative, unlike the Playback() 
+application which accepts a noanswer argument. 
+Because ConfBridge is often the only way to get much functionality in Asterisk to work as desired, 
+this is a significant limitation; 
 however, modifying the source code can remove this behavior for better operation.
 
 Patch Instructions:
 
-Navigate to the location where Asterisk was compiled, e.g. /usr/src/asterisk-13.whatever — go to the apps directory.
+Navigate to the location where Asterisk was compiled, e.g. /usr/src/asterisk-13.whatever 
+— go to the apps directory.
 Open app_confbridge.c for editing
 Perform a find and replace operation, replacing ast_answer(chan); with //ast_answer(chan);.
 Navigate to the root source folder, e.g. /usr/src/asterisk-13.whatever
 Type make and then make install to recompile Asterisk.
 Type service asterisk stop and then service asterisk start to restart Asterisk.
-ConfBridge() will no longer automatically supervise a call. Once you've patched your Asterisk system, you must manually perform supervisory functions, as follows:
+ConfBridge() will no longer automatically supervise a call. 
+Once you've patched your Asterisk system, you must manually perform supervisory functions, as follows:
 
 This will replicate the previous behavior, by manually answering and supervising the call.
 exten => s,1,Answer()
@@ -74,11 +83,13 @@ exten => s,1,Progress()
     same => n,ConfBridge(mybridge)
     same => n,Hangup()
                 
-This will not perform any supervisory functions at all! The caller may/will not hear anything! For most cases, you should not use this at all:
+This will not perform any supervisory functions at all! The caller may/will not hear anything! 
+For most cases, you should not use this at all:
 exten => s,1,ConfBridge(mybridge)
     same => n,Hangup()
                 
 You must either use Progress() or Answer(). Failing to do so may result in no audio being passed at all.
 
-Take care to revisit all uses of ConfBridge in your dialplan code to ensure you're using Progress or Answer before any calls to ConfBridge.
+Take care to revisit all uses of ConfBridge in your dialplan code to ensure you're using 
+Progress or Answer before any calls to ConfBridge.
 ```
