@@ -41,8 +41,9 @@ Gosub(mfmain,s,1(1,1)) ; Cust_Sender, FAM_Disable, Expecting MF String from Cust
 Calls are delivered into the [Main] context.
 
 You will need to Patch your Asterisk system to allow answer supervision to pass through the MF trunk. 
-Please look at the NPSTN Docs for information on how to do this. The related article in included below:
+Please look at the NPSTN Docs for information on how to do this. The related article is included below:
 
+https://npstn.us/docs/
 
 Non-Supervising Conference Bridges
 Discovery & Implementation Credit: Dylan Cruz, 04-2020
