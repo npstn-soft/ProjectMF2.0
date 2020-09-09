@@ -22,7 +22,7 @@ Do the same thing for the included indications.conf (For MF Tone generation)
 You are all set! (For correct supervision see below)
 
 AST_Sender = Asterisk Sender (This is the built-in sender using the [mfer] subroutine developed by Naveen Albert & Brian Clancy)
-Cust_Sender = Enable this open if you want to use your own MF sender.
+Cust_Sender = Enable this  if you want to use your own MF sender.
 
 FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to be used with AST_Sender for better reliability if you have F
 AM_ENABLE turned on using a Custom Sender the detector will not be able to hear the MF)
