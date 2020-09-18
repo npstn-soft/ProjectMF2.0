@@ -1,9 +1,0 @@
-#!/bin/bash
-data=$1
-
-if [[ $data =~ ['#'] ]]; then
-printf "true"
-else
-printf "false"
-fi
-
