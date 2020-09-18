@@ -7,11 +7,10 @@ Installation: 
 
 Include the "detect" folder in /etc/asterisk
 
-Make sure all the files ("mf", "mf2", "st_scan") have the correct permissions:
+Make sure all the files ("mf", "mf2") have the correct permissions:
 
 chmod a+x mf
 chmod a+x mf2
-chmod a+x st_scan
 
 Open your extensions.conf and add the line:
 
@@ -19,7 +18,6 @@ Open your extensions.conf and add the line:
 
 Copy the "mf_user" "mf_bridge" contexts from the included confbridge.conf example into your 
 confbridge.conf or use our copy verbatim.
-Do the same thing for the included indications.conf (For MF Tone generation)
 
 You are all set! (For correct supervision see below)
 
