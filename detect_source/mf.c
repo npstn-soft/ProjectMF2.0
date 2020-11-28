@@ -212,11 +212,6 @@ int main(int argc, char *argv[]) {
     mf_detect(&dtmf, smp, samples, DSP_DIGITMODE_NOQUELCH, &writeback);
     printf("%s", dtmf.digits[0] ? dtmf.digits : "");
 
-    memset(&dtmf, 0, sizeof(dtmf)); // useless
-    ast_digit_detect_init(&dtmf, DSP_DIGITMODE_DTMF);
-    dtmf_detect(&dtmf, smp, samples, DSP_DIGITMODE_NOQUELCH, &writeback);
-    printf("%s", dtmf.digits[0] ? dtmf.digits : "");
-
     if(smp) free(smp);
     return(0);
 }
