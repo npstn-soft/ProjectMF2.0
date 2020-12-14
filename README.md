@@ -18,7 +18,7 @@ The MF Detection that is apart of PMF2 has been know to be very reliable and sin
 
 First step move mf.conf & confbridge.conf in /etc/asterisk.
 
-You will also need to create a directory called "detect" in /etc/asterisk as well, Inside it must contain the MF Receiver "mf" and the bash script "mf2" Make sure these programs both have correct permissions. We recommend you run:
+Move "detect" into /etc/asterisk as well. Run the command "make" in the directory to compile it and then run the following to set the correct permissions.
 
 ```bash
 chmod a+x mf
