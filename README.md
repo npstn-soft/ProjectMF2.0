@@ -59,7 +59,7 @@ If you just want to have the fun of hearing MF tones when placing calls on your 
 Extensions.conf
 
 ```
-#include main.conf
+#include mf.conf
 
 [main] ; By default this is the context used to deliver calls into the dialplan from PMF. This can be changed in mf.conf or changed to a variable.
 exten => 3551000,1,Progress
@@ -102,7 +102,7 @@ same => n,Hangup
 Sample Asterisk config for remote receivers:
 
 ```
-#include main.conf
+#include mf.conf
 
 
 [office] ; SIP Phones
