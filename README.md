@@ -12,7 +12,7 @@ Custom Sender\
 Custom Register\
 Forward Audio Mute
 
-The MF Detection that is apart of PMF2 has been know to be very reliable and since this solely uses the Asterisk Dialplan you do not need to recompile and mess with Asterisk to get this to work. All you need is the included mf.conf, confbridge.conf, examples & binaries in the right place! (Or you can compile it yourself from source to add more functionality!)
+The MF Detection that is apart of PMF2 has been know to be very reliable and since this solely uses the Asterisk Dialplan you do not need to recompile and mess with Asterisk to get this to work. All you need is the included mf.conf, confbridge.conf, examples & binaries in the right place!
 
 ## Getting Started
 
