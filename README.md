@@ -1,95 +1,134 @@
-# ProjectMF 2.0 (AstMF Rel)
-```
-Included is a pre-compiled version of the DSP needed for x86 and ARM. If you would like to modify it we 
-have included the main source (See detect_source)
+# ProjectMF 2.0
 
-Installation: 
+## About
 
-Include the "detect" folder in /etc/asterisk
+ProjectMF 2.0 adds MF Signaling capabilities into Asterisk for professional or hobbyist use.
 
-Make sure all the files ("mf", "mf2") have the correct permissions:
+PMF2 is capable of:
 
+Local Sender\
+Local Register\
+Custom Sender\
+Custom Register\
+Forward Audio Mute
+
+The MF Detection that is apart of PMF2 has been know to be very reliable and since this solely uses the Asterisk Dialplan you do not need to recompile and mess with Asterisk to get this to work. All you need is the included mf.conf, confbridge.conf, examples & binaries in the right place! (Or you can compile it yourself from source to add more functionality!)
+
+## Getting Started
+
+First step move mf.conf & confbridge.conf in /etc/asterisk.
+
+You will also need to create a directory called "detect" in /etc/asterisk as well, Inside it must contain the MF Receiver "mf" and the bash script "mf2" Make sure these programs both have correct permissions. We recommend you run:
+
+```bash
 chmod a+x mf
 chmod a+x mf2
-
-Open your extensions.conf and add the line:
-
-#include mf.conf
-
-Copy the "mf_user" "mf_bridge" contexts from the included confbridge.conf example into your 
-confbridge.conf or use our copy verbatim.
-
-You are all set! (For correct supervision see below)
-
-AST_Sender = Asterisk Sender (This is the built-in sender using the [mfer] subroutine developed by 
-Naveen Albert & Brian Clancy)
-
-Cust_Sender = Enable this  if you want to use your own MF sender.
-
-FAM_Enable = Forward Audio Mute (This will mute the audio going in the forward direction and is to 
-be used with AST_Sender for better reliability if you have F
-AM_ENABLE turned on using a Custom Sender the detector will not be able to hear the MF)
-
-FAM_Disable = This disables the Forward Audio Mute function.
-
-First Argument: 0-AST_Sender, 1-Cust_Sender
-Second Argument: 0-FAM_Enable, 1-FAM_Disable
-Third Argument: Number to be out pulsed (If using Asterisk Sender)
-
-Gosub(mfmain,s,1(0,0,5551212)) ; AST_Sender, FAM_Enable, KP 555-1212 ST (loopback into [Main]
-Gosub(mfmain,s,1(0,1,5551212)) ; AST_Sender, FAM_Disable, KP 555-1212 ST (loopback into [Main]
-
-Gosub(mfmain,s,1(1,1)) ; Cust_Sender, FAM_Disable, Expecting MF String from Custom Sender
-
-Calls are delivered into the [Main] context.
-
-You will need to Patch your Asterisk system to allow answer supervision to pass through the MF trunk. 
-Please look at the NPSTN Docs for information on how to do this. The related article is included below:
-
-https://npstn.us/docs/
-
-Non-Supervising Conference Bridges
-Discovery & Implementation Credit: Dylan Cruz, 04-2020
-Article was written by Naveen Albert for NPSTN
-
-By default, the ConfBridge() application will supervise with no alternative, unlike the Playback() 
-application which accepts a noanswer argument. 
-Because ConfBridge is often the only way to get much functionality in Asterisk to work as desired, 
-this is a significant limitation; 
-however, modifying the source code can remove this behavior for better operation.
-
-Patch Instructions:
-
-Navigate to the location where Asterisk was compiled, e.g. /usr/src/asterisk-13.whatever 
-— go to the apps directory.
-Open app_confbridge.c for editing
-Perform a find and replace operation, replacing ast_answer(chan); with //ast_answer(chan);.
-Navigate to the root source folder, e.g. /usr/src/asterisk-13.whatever
-Type make and then make install to recompile Asterisk.
-Type service asterisk stop and then service asterisk start to restart Asterisk.
-ConfBridge() will no longer automatically supervise a call. 
-Once you've patched your Asterisk system, you must manually perform supervisory functions, as follows:
-
-This will replicate the previous behavior, by manually answering and supervising the call.
-exten => s,1,Answer()
-    same => n,ConfBridge(mybridge)
-    same => n,Hangup()
-                
-This will allow two-way audio without answering. Progress allows passing of audio without supervising. 
-The main use case here is for backend mixing of audio channels, such as for intercept, signaling,
-or operator services.
-
-exten => s,1,Progress()
-    same => n,ConfBridge(mybridge)
-    same => n,Hangup()
-                
-This will not perform any supervisory functions at all! The caller may/will not hear anything! 
-For most cases, you should not use this at all:
-exten => s,1,ConfBridge(mybridge)
-    same => n,Hangup()
-                
-You must either use Progress() or Answer(). Failing to do so may result in no audio being passed at all.
-
-Take care to revisit all uses of ConfBridge in your dialplan code to ensure you're using 
-Progress or Answer before any calls to ConfBridge.
 ```
+
+Next you will need to add the following to the top of your extensions.conf.
+
+```
+#include mf.conf
+```
+
+Bam, You are done!
+
+
+## Syntax
+
+## Gosub(mfmain,s,1(0,0,0,5551212))
+###### Register_OPT=Local, Sender_OPT=Local, FAM=Enable, SenderDigits= KP5551212ST
+
+
+The first argument tells the system if you want to use a local MF register or a farend/remote register. The value 0 will force a local MF receiver. Any other value will pull whatever is in register_map with that value.
+
+The second argument tells the system if you want to use a Local MF Digit Sender or if you have a piece of equipment that will send MF forward. The value 0 will bring in a local MF sender with the value of the last argument (Sender Digits)
+
+The third argument tells the system if you want to Enable or Disable "Forward Audio Mute" AKA "FAM" this will prevent any audio from the caller/equipment going forward until MF signaling is done. If you are using a Custom Sender you must disable Forward Audio Mute to allow audio from you Sender in the forward direction. Otherwise it is recommended you leave this value enabled so noise on the line will not adversely effect signaling.
+
+The fourth argument is the Sender Digits and it is the digits send in MF (Multi-Frequency) in the forward direction and this value will only be used if the second argument is set to use the local sender. 
+
+
+
+## Examples
+
+### Local MF Loopback
+If you just want to have the fun of hearing MF tones when placing calls on your local asterisk system Not much is required at all besides the above basic install and the below sample config.
+
+
+Extensions.conf
+
+```
+#include main.conf
+
+[main] ; By default this is the context used to deliver calls into the dialplan from PMF. This can be changed in mf.conf or changed to a variable.
+exten => 3551000,1,Progress
+same => n,PlayTones(1004)
+same => n,Wait(5)
+same => n,Hangup
+
+exten => 3551001,1,Answer
+same => n,Playback(hello-world)
+same => n,Hangup
+
+
+[office] ; SIP Phones
+
+;Make all 355-XXXX calls go over a loopback MF trunk using
+;Asterisk Local Register, Asterisk Local Sender &
+;Forward Audio Mute Enable.
+
+exten => _355XXXX,1,Gosub(mfmain,s,1(0,0,0,${EXTEN}))
+same => n,Hangup
+```
+
+### Define Remote MF Receivers 
+
+In mf.conf find register_map and add the entrypoint into the devices that are expecting MF. (*Note the device must answer immediately and must not be expecting some type of start signaling, If some other type of signal needs to be sent that must be added in the register_map section.
+
+```
+[register_map]
+exten => 22,1,Dial(DAHDI/g5) ; #5 Crossbar MF Receiver
+same => n,Hangup
+
+exten => 23,1,Dial(DAHDI/g3) ; Cognitronics 688 ANA
+same => n,Hangup
+
+exten => 24,1,Dial(IAX2/npstn@scpa01.ddns.net/5312600) ; ProjectMF2 on an NPSTN Members machine expecting 7 digits 531-XXXX or 826-XXXX.
+same => n,Hangup
+
+```
+
+Sample Asterisk config for remote receivers:
+
+```
+#include main.conf
+
+
+[office] ; SIP Phones
+
+exten => _531XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+same => n,Hangup
+
+exten => _826XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+same => n,Hangup
+
+exten => _232XXXX,1,Gosub(mfmain,s,1(22,0,0,${EXTEN})) ; MF Trunk into a #5 Crossbar.
+same => n,Hangup
+
+exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)})) ; MF Trunk into an ANAC Device.
+same => n,Hangup
+```
+ 
+If you need any help with config you may contact Dylan Cruz at admin@dc4.us
+
+
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+Also make sure to check out NPSTN at https://npstn.us & Donations are also accepted via a PayPal link at that address! :)
+## License
+[GNU GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
