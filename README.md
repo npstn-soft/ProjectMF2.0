@@ -33,6 +33,8 @@ Next you will need to add the following to the top of your extensions.conf.
 
 Bam, You are done!
 
+Notes: If you prefer to use your own confbridge.conf you can just copy the relevant contexts (mf_bridge & mf_user) And paste them in your existing confbridge.conf file. Also if you already have a [globals] defined somewhere in your dialplan you have to copy the globals that are set in mf.conf and paste them there instead, And then delete the context in mf.conf -- Otherwise hardly anything will work! This uses the MFer subroutine found in the NPSTN docs. If you already have this on your system you should remove all instances of it being re-defined in mf.conf (The subroutine itself and the globals would not be needed to be re-set)
+
 
 ## Syntax
 
