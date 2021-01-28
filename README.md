@@ -122,6 +122,8 @@ exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)})) ; MF Trunk into an ANA
 same => n,Hangup
 ```
  
+If you want proper answer supervision you must re-compile asterisk with a very simple patch (only two lines!) see: https://npstn.us/docs/#conf-supe
+ 
 If you need any help with config you may contact Dylan Cruz at admin@dc4.us
 
 
