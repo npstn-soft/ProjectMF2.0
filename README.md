@@ -36,8 +36,8 @@ Bam, You are done!
 
 ## Syntax
 
-## Gosub(mfmain,s,1(0,0,0,5551212))
-###### Register_OPT=Local, Sender_OPT=Local, FAM=Enable, SenderDigits= KP5551212ST
+## Gosub(mfmain,s,1(0,0,0,5551212,main))
+###### Register_OPT=Local, Sender_OPT=Local, FAM=Enable, SenderDigits= KP5551212ST SendContext=main
 
 
 The first argument tells the system if you want to use a local MF register or a farend/remote register. The value 0 will force a local MF receiver. Any other value will pull whatever is in register_map with that value.
@@ -47,6 +47,8 @@ The second argument tells the system if you want to use a Local MF Digit Sender 
 The third argument tells the system if you want to Enable or Disable "Forward Audio Mute" AKA "FAM" this will prevent any audio from the caller/equipment going forward until MF signaling is done. If you are using a Custom Sender you must disable Forward Audio Mute to allow audio from you Sender in the forward direction. Otherwise it is recommended you leave this value enabled so noise on the line will not adversely effect signaling.
 
 The fourth argument is the Sender Digits and it is the digits send in MF (Multi-Frequency) in the forward direction and this value will only be used if the second argument is set to use the local sender. 
+
+The fifth argument is the context where calls are delivered into after being properly decoded. It will be sent to the number decoded without KP/ST into the context defined on the first priority.
 
 
 
@@ -78,7 +80,7 @@ same => n,Hangup
 ;Asterisk Local Register, Asterisk Local Sender &
 ;Forward Audio Mute Enable.
 
-exten => _355XXXX,1,Gosub(mfmain,s,1(0,0,0,${EXTEN}))
+exten => _355XXXX,1,Gosub(mfmain,s,1(0,0,0,${EXTEN},main))
 same => n,Hangup
 ```
 
@@ -107,16 +109,16 @@ Sample Asterisk config for remote receivers:
 
 [office] ; SIP Phones
 
-exten => _531XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+exten => _531XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN},main)) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
 same => n,Hangup
 
-exten => _826XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+exten => _826XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN},main)) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
 same => n,Hangup
 
-exten => _232XXXX,1,Gosub(mfmain,s,1(22,0,0,${EXTEN})) ; MF Trunk into a #5 Crossbar.
+exten => _232XXXX,1,Gosub(mfmain,s,1(22,0,0,${EXTEN},main)) ; MF Trunk into a #5 Crossbar.
 same => n,Hangup
 
-exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)})) ; MF Trunk into an ANAC Device.
+exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)},main)) ; MF Trunk into an ANAC Device.
 same => n,Hangup
 ```
  
