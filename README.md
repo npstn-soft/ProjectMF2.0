@@ -63,7 +63,7 @@ Extensions.conf
 ```
 #include mf.conf
 
-[main] ; By default this is the context used to deliver calls into the dialplan from PMF. This can be changed in mf.conf or changed to a variable.
+[main] ; Context defined on the fifth argument
 exten => 3551000,1,Progress
 same => n,PlayTones(1004)
 same => n,Wait(5)
@@ -109,16 +109,16 @@ Sample Asterisk config for remote receivers:
 
 [office] ; SIP Phones
 
-exten => _531XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN},main)) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+exten => _531XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
 same => n,Hangup
 
-exten => _826XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN},main)) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
+exten => _826XXXX,1,Gosub(mfmain,s,1(24,0,0,${EXTEN})) ; MF Trunk into Terras Switch on NPSTN & sending the 7 digit called number.
 same => n,Hangup
 
-exten => _232XXXX,1,Gosub(mfmain,s,1(22,0,0,${EXTEN},main)) ; MF Trunk into a #5 Crossbar.
+exten => _232XXXX,1,Gosub(mfmain,s,1(22,0,0,${EXTEN})) ; MF Trunk into a #5 Crossbar.
 same => n,Hangup
 
-exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)},main)) ; MF Trunk into an ANAC Device.
+exten => 311,1,Gosub(mfmain,s,1(23,0,0,${CALLERID(num)})) ; MF Trunk into an ANAC Device.
 same => n,Hangup
 ```
  
