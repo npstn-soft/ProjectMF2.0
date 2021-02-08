@@ -12,7 +12,9 @@ Custom Sender\
 Custom Register\
 Forward Audio Mute
 
-The MF Detection that is apart of PMF2 has been know to be very reliable and since this solely uses the Asterisk Dialplan you do not need to recompile and mess with Asterisk to get this to work. All you need is the included mf.conf, confbridge.conf, examples & binaries in the right place!
+The MF Detection that is apart of PMF2 has been know to be very reliable and since this solely uses the Asterisk dialplan you do not need to recompile and mess with Asterisk to get this to work. All you need is the included mf.conf, confbridge.conf, examples & binaries in the right place!
+
+If you already have [mfer] and [signallookup] from the NPSTN Docs, you can remove this as they are the same subroutines.
 
 ## Getting Started
 
@@ -31,9 +33,9 @@ Next you will need to add the following to the top of your extensions.conf.
 #include mf.conf
 ```
 
-Bam, You are done!
+Bam, you are done!
 
-Notes: If you prefer to use your own confbridge.conf you can just copy the relevant contexts (mf_bridge & mf_user) And paste them in your existing confbridge.conf file. Also if you already have a [globals] defined somewhere in your dialplan you have to copy the globals that are set in mf.conf and paste them there instead, And then delete the context in mf.conf -- Otherwise hardly anything will work! This uses the MFer subroutine found in the NPSTN docs. If you already have this on your system you should remove all instances of it being re-defined in mf.conf (The subroutine itself and the globals would not be needed to be re-set)
+Notes: If you prefer to use your own confbridge.conf you can just copy the relevant contexts (mf_bridge & mf_user) and paste them in your existing confbridge.conf file.
 
 
 ## Syntax
@@ -51,8 +53,6 @@ The third argument tells the system if you want to Enable or Disable "Forward Au
 The fourth argument is the Sender Digits and it is the digits send in MF (Multi-Frequency) in the forward direction and this value will only be used if the second argument is set to use the local sender. 
 
 The fifth argument is the context where calls are delivered into after being properly decoded. It will be sent to the number decoded without KP/ST into the context defined on the first priority.
-
-
 
 ## Examples
 
